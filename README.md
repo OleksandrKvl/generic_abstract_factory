@@ -32,9 +32,9 @@ std::shared_ptr<IProductA> a = abstractFactory->create<IProductA>();
 std::unique_ptr<IProductB> b = abstractFactory->create<IProductB>();
 ```
 You can also change default product return type for the whole factory using 
-custom `abstract_creator`, see *Customize abstract_creator* section.  
+custom  abstract creator, see *Customize abstract creator* section.  
 Note that return type doesn't have to be the pointer, plain values are also 
-supported, see *Customize concrete_creator* section.
+supported, see *Customize concrete creator* section.
 
 ### Customize product arguments
 You can specify `create()` arguments for specific product, by default they will
