@@ -120,7 +120,7 @@ AFactory* abstractFactory = &concreteFactory;
 
 int value = abstractFactory->create<IValue>();
 ```
-For example of using prototype-based creator, see main.cpp.
+For example of using prototype-based creator, see generic_abstract_factory.cpp.
 
 ### Adapt existing interfaces
 If you have interface and you need to use `ret_type`/`ctor_args` but you 
