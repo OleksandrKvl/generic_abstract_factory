@@ -103,24 +103,27 @@ namespace generic_abstract_factory
 			typename Root,
 			typename Context,
 			typename... Contexts,
-			typename C0,
-			typename... Cs
+			typename Concrete,
+			typename... Concretes
 		>
 		struct generate_creators<
-			Creator, Root, utils::tl<Context, Contexts...>, utils::tl<C0, Cs...>
+			Creator,
+			Root,
+			utils::tl<Context, Contexts...>, 
+			utils::tl<Concrete, Concretes...>
 		>
 		{
-			static_assert(sizeof...(Contexts) == sizeof...(Cs),
+			static_assert(sizeof...(Contexts) == sizeof...(Concretes),
 				"Abstract and concrete lists are of different length");
 
 			using type = Creator<
 				Context,
-				C0,
+				Concrete,
 				typename generate_creators<
-				Creator,
-				Root,
-				utils::tl<Contexts...>,
-				utils::tl<Cs...>
+					Creator,
+					Root,
+					utils::tl<Contexts...>,
+					utils::tl<Concretes...>
 				>::type
 			>;
 		};
@@ -129,11 +132,11 @@ namespace generic_abstract_factory
 			template<typename...>class Creator,
 			typename Root,
 			typename Context,
-			typename C0
+			typename Concrete
 		>
-			struct generate_creators<Creator, Root, utils::tl<Context>, utils::tl<C0>>
+		struct generate_creators<Creator, Root, utils::tl<Context>, utils::tl<Concrete>>
 		{
-			using type = Creator<Context, C0, Root>;
+			using type = Creator<Context, Concrete, Root>;
 		};
 
 		struct convertible_to_any
@@ -239,17 +242,17 @@ namespace generic_abstract_factory
 		utils::convertible_to_any create(Args && ...)
 		{
 			static_assert(std::is_base_of<
-				Creator<Abstract>,
-				abstract_factory
-			>::value,
+					Creator<Abstract>,
+					abstract_factory
+				>::value,
 				"abstract_factory::create(): wrong product type"
 			);
 			
 			static_assert(utils::is_invocable_memfn<
-				decltype(&Creator<Abstract>::create),
-				utils::type_identity<Abstract>,
-				Args...
-			>::value,
+					decltype(&Creator<Abstract>::create),
+					utils::type_identity<Abstract>,
+					Args...
+				>::value,
 				"abstract_factory::create(): wrong arguments"
 			);
 			
